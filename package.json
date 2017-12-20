@@ -1,0 +1,13 @@
+{
+  "name": "bottender-messenger",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "bottender": "0.14.11",
+    "nodemon": "1.14.0"
+  }
+}
