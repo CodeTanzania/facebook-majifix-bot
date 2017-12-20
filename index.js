@@ -12,7 +12,9 @@ bot.onEvent(async context => {
   await context.sendText('Hello World');
 });
 
-const server = createServer(bot);
+const server = createServer(bot, {
+  verifyToken: config.verifyToken
+});
 
 server.listen(5000, () => {
   console.log('server is running on 5000 port...');
