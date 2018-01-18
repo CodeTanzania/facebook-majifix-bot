@@ -1,0 +1,29 @@
+{
+  "textBotWelcomeMsg": "Karibu kwenye Dawasco Bot, Nikusaidie nini leo?",
+  "textSelectLanguage": "Chagua Lugha",
+  "textAddPhoneNum": "Unaweza kutupatia namba yako ili tuweze kukutumia maendeleo ya tatizo linapofanyiwa kazi",
+  "textPhoneNumReceivedNote": "Asante. Sasa tutakufikia kupitia namba %s",
+  "textSelectProblemService": "Tafadhali chagua aina ya tatizo ulilonalo.",
+  "textShareLocation": "Tungependa kukusanya taarifa ya eneo lako kujua tatizo lilipo.\nTafadhali bonyeza batani ya eneo na kushare eneo la tatizo na sisi.\nUtahitajika kuwasha GPS ili kufanikisha.",
+  "textAddProblemMoreInfo": "Maelezo zaidi juu ya tatizo yatatusaidia kutatua haraka. Je!, Unaweza kutupa maelezo ya ziada?",
+  "textAddProblemDesc": "Tafadhali andika maelezo ya tatizo",
+  "textUploadProblemPicture": "Tafadhali ambatisha picha ya tatizo",
+  "actionSubmitProblem": "Wasilisha Tatizo",
+  "actionChangePhoneNumber": "Badili Namba Ya Simu",
+  "actionChangeLanguage": "Badili Lugha",
+  "enterPhoneNumber": "Ingiza Namba Mpya Ya Simu",
+  "menuProblemExtraInfoType": [
+    {
+      "title": "Tuma Maelezo",
+      "payload": "PMI_MENU_SEND_TEXT"
+    },
+    {
+      "title": "Tuma Picha",
+      "payload": "PMI_MENU_SEND_PICTURE"
+    },
+    {
+      "title": "Endelea",
+      "payload": "PMI_MENU_CONTINUE"
+    }
+  ]
+}

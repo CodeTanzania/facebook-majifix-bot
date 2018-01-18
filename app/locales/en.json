@@ -1,0 +1,29 @@
+{
+  "textBotWelcomeMsg": "Welcome Dawasco, How Can I help you?",
+  "textSelectLanguage": "Choose Language",
+  "textAddPhoneNum": "Please enter your phone number to stay updated about the problem progress",
+  "textPhoneNumReceivedNote": "Thank You. We will reach you through phone number %s",
+  "textSelectProblemService": "Please select the type of problem you want to report.",
+  "textShareLocation": "We will now need to collect your location to know where the problem is.\nPlease click the Share location button so that we can get your coordinates.\nYou need to enable your GPS to do it.\nTo continue without submiting your location, type quit.",
+  "textAddProblemMoreInfo": "More information about the problem will help us solve it faster. Can you add some additional details?",
+  "textAddProblemDesc": "Please write problem description",
+  "textUploadProblemPicture": "Please upload a picture of the problem",
+  "actionSubmitProblem": "Submit a Problem",
+  "actionChangePhoneNumber": "Change Phone Number",
+  "actionChangeLanguage": "Change Language",
+  "enterPhoneNumber": "Please enter your phone number",
+  "menuProblemExtraInfoType": [
+    {
+      "title": "Send text",
+      "payload": "PMI_MENU_SEND_TEXT"
+    },
+    {
+      "title": "Send picture",
+      "payload": "PMI_MENU_SEND_PICTURE"
+    },
+    {
+      "title": "Continue",
+      "payload": "PMI_MENU_CONTINUE"
+    }
+  ]
+}
