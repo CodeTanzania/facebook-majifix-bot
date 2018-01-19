@@ -1,5 +1,6 @@
 
 const i18n = require('i18n');
+const { askPhoneNumber, displayPhoneNumberConfirm } = require('../actions');
 
 /**
  * Handle submit problem conversation
@@ -25,6 +26,17 @@ const submitProblemHandler = async (context, next) => {
         })
         return;
       }
+      if (context.state.askingPhoneNumberConfirm) {
+        switch (payload) {
+          case 'QUICK_CONFIRM_YES':
+            submitProblem(context);
+          // submit problem
+          case 'QUICK_CONFIRM_NO':
+            // add new phone number
+            context.setState({ phoneNumber: null });
+            confirmPhoneNum(context);
+        }
+      }
     }
 
     if (context.event.hasAttachment) {
@@ -37,14 +49,16 @@ const submitProblemHandler = async (context, next) => {
           askingProblemLocation: false
         });
 
-        const actionAddProblemMoreInfoMenu = i18n.__({
+        const problemMoreInfoMenu = i18n.__({
           phrase: 'menuProblemExtraInfoType',
           locale
         });
-        const messengerMenu = actionAddProblemMoreInfoMenu.map(menu => {
+        // Modify menu items as per messenger requirement
+        const messengerMenu = problemMoreInfoMenu.map(menu => {
           menu.type = 'postback';
           return menu;
         });
+        // Display Menu
         await context.sendButtonTemplate(i18n.__({
           phrase: 'textAddProblemMoreInfo',
           locale
@@ -57,6 +71,7 @@ const submitProblemHandler = async (context, next) => {
           problem: { image: url, description: 'Created via Facebook Bot' },
           askingProblemPicture: false
         });
+        confirmPhoneNum(context);
       }
       return;
     }
@@ -76,7 +91,7 @@ const submitProblemHandler = async (context, next) => {
           break;
         case 'PMI_MENU_CONTINUE':
           // continue with problem submission
-          cancelProblemMoreInfo(context);
+          confirmPhoneNum(context);
           break;
       }
     }
@@ -88,6 +103,14 @@ const submitProblemHandler = async (context, next) => {
           problem: { description: text },
           askingProblemDesc: false
         });
+        confirmPhoneNum(context);
+      }
+      if (context.state.askingPhoneNumber) {
+        context.setState({
+          phoneNumber: text,
+          askingPhoneNumber: false
+        });
+        confirmPhoneNum(context);
       }
     }
 
@@ -108,6 +131,22 @@ const addProblemPicture = async (context) => {
   context.setState({ askingProblemPicture: true });
   const { locale } = context.state;
   await context.sendText(i18n.__({ phrase: 'textUploadProblemPicture', locale }));
+}
+
+const confirmPhoneNum = async (context) => {
+  if (!context.state.phoneNumber) {
+    // Phone number is not set
+    context.setState({ askingPhoneNumber: true });
+    askPhoneNumber(context);
+  } else {
+    // Phone number is set
+    context.setState({ askingPhoneNumberConfirm: true });
+    displayPhoneNumberConfirm(context);
+  }
+}
+
+const submitProblem = async (context) => {
+
 }
 
 

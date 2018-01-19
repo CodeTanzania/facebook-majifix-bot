@@ -1,8 +1,8 @@
 # Dawasco Facebook BOT 
-- Node >8.9.3
+- Node >= 7.6
 - [bottender](https://github.com/Yoctol/bottender)
-- Yarn
-- Winston
+- Yarn (Dependency Manager)
+- Winston (Logger)
 
 This is the facebook messenger bot to help many dawasco customers who are using facebook to report water related problems direct to dawasco. 
 
@@ -40,6 +40,7 @@ The project files are organized as follows;
 .
 ├── README.md
 ├── app
+│   ├── actions.js
 │   ├── api.js
 │   ├── bottender.config.js
 │   ├── handlers
@@ -52,7 +53,6 @@ The project files are organized as follows;
 │   │   ├── en.json
 │   │   └── sw.json
 │   └── winston.js
-├── package-lock.json
 ├── package.json
 └── yarn.lock
 ```
@@ -63,6 +63,10 @@ The project files are organized as follows;
 All functionalities start from here.\
 Mainly it's a server which listen on port 5000. You are encouraged to add more [event listener](https://bottender.js.org/docs/APIReference-Event)
 and [handler](https://bottender.js.org/docs/APIReference-Handler) to enrich the bot.
+
+### app/actions.js
+It contains functions that when executed they send command to user to prompt them to do something with the bot. They stay in this file so that they can be reusable. If action to be sent to user is not expected to be reused
+somewhere else then we don't recommend to put it here.
 
 ### bottender.config.js
 

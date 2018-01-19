@@ -31,7 +31,7 @@ bot.setInitialState({
     changeLanguage: false,
     changePhoneNumber: false,
   },
-  locale: 'en',
+  locale: 'sw',
 });
 
 const { client } = bot.connector;

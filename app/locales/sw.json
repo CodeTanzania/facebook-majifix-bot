@@ -8,6 +8,7 @@
   "textAddProblemMoreInfo": "Maelezo zaidi juu ya tatizo yatatusaidia kutatua haraka. Je!, Unaweza kutupa maelezo ya ziada?",
   "textAddProblemDesc": "Tafadhali andika maelezo ya tatizo",
   "textUploadProblemPicture": "Tafadhali ambatisha picha ya tatizo",
+  "textConfirmPhone": "Tunakaribia kuwasilisha tatizo lako. \n Tafadhali hakikisha namba yako ya simu: %s",
   "actionSubmitProblem": "Wasilisha Tatizo",
   "actionChangePhoneNumber": "Badili Namba Ya Simu",
   "actionChangeLanguage": "Badili Lugha",
@@ -15,15 +16,30 @@
   "menuProblemExtraInfoType": [
     {
       "title": "Tuma Maelezo",
-      "payload": "PMI_MENU_SEND_TEXT"
+      "payload": "PMI_MENU_SEND_TEXT",
+      "type": "postback"
     },
     {
       "title": "Tuma Picha",
-      "payload": "PMI_MENU_SEND_PICTURE"
+      "payload": "PMI_MENU_SEND_PICTURE",
+      "type": "postback"
     },
     {
       "title": "Endelea",
-      "payload": "PMI_MENU_CONTINUE"
+      "payload": "PMI_MENU_CONTINUE",
+      "type": "postback"
+    }
+  ],
+  "menuQuickConfirm": [
+    {
+      "title": "Ndio",
+      "payload": "QUICK_CONFIRM_YES",
+      "content_type": "text"
+    },
+    {
+      "title": "Hapana",
+      "payload": "QUICK_CONFIRM_NO",
+      "content_type": "text"
     }
   ]
 }

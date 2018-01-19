@@ -8,6 +8,7 @@
   "textAddProblemMoreInfo": "More information about the problem will help us solve it faster. Can you add some additional details?",
   "textAddProblemDesc": "Please write problem description",
   "textUploadProblemPicture": "Please upload a picture of the problem",
+  "textConfirmPhone": "We're ready to submit your problem.\nPlease confirm your phone number : %s",
   "actionSubmitProblem": "Submit a Problem",
   "actionChangePhoneNumber": "Change Phone Number",
   "actionChangeLanguage": "Change Language",
@@ -24,6 +25,16 @@
     {
       "title": "Continue",
       "payload": "PMI_MENU_CONTINUE"
+    }
+  ],
+  "menuQuickConfirm": [
+    {
+      "title": "Yes",
+      "payload": "QUICK_CONFIRM_YES"
+    },
+    {
+      "title": "No",
+      "payload": "QUICK_CONFIRM_NO"
     }
   ]
 }
