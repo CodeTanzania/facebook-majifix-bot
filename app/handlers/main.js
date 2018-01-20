@@ -1,5 +1,4 @@
 const i18n = require('i18n');
-const API = require('../api');
 const { askPhoneNumber, askLocale, askProblemService, displayMainMenu } = require('../prompts');
 
 /**

@@ -1,6 +1,7 @@
 
 const i18n = require('i18n');
 const merge = require('deepmerge');
+const API = require('../api');
 const { askPhoneNumber, displayPhoneNumberConfirm } = require('../prompts');
 
 /**
@@ -183,6 +184,7 @@ const submitProblem = async (context) => {
     'phone': phoneNumber,
     'service_code': problem.service
   }
+  const result = await API.submitServiceRequest(serviceRequest);
 }
 
 
