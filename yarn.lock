@@ -942,6 +942,10 @@ deep-object-diff@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/deep-object-diff/-/deep-object-diff-1.0.4.tgz#ee4c93b4a9da2962a568964c935a1989a416f9c4"
 
+deepmerge@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-2.0.1.tgz#25c1c24f110fb914f80001b925264dd77f3f4312"
+
 define-property@^0.2.5:
   version "0.2.5"
   resolved "https://registry.yarnpkg.com/define-property/-/define-property-0.2.5.tgz#c35b1ef918ec3c990f9a5bc57be04aacec5c8116"

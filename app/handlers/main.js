@@ -1,6 +1,6 @@
 const i18n = require('i18n');
 const API = require('../api');
-const { askPhoneNumber, askLocale, askProblemService, displayMainMenu } = require('../actions');
+const { askPhoneNumber, askLocale, askProblemService, displayMainMenu } = require('../prompts');
 
 /**
  * Main handler of the conversation in this bot

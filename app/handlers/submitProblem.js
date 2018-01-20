@@ -1,6 +1,7 @@
 
 const i18n = require('i18n');
-const { askPhoneNumber, displayPhoneNumberConfirm } = require('../actions');
+const merge = require('deepmerge');
+const { askPhoneNumber, displayPhoneNumberConfirm } = require('../prompts');
 
 /**
  * Handle submit problem conversation
@@ -16,25 +17,35 @@ const submitProblemHandler = async (context, next) => {
     if (context.event.isQuickReply) {
       const { payload } = context.event.quickReply;
       if (context.state.askingProblemService) {
-        context.setState({
+        // capture problem service category
+        context.setState(merge(context.state, {
           problem: { service: payload },
           askingProblemService: false,
           askingProblemLocation: true
-        });
+        }));
         await context.sendText(i18n.__({ phrase: 'textShareLocation', locale }), {
           quick_replies: [{ "content_type": "location" }]
         })
         return;
       }
       if (context.state.askingPhoneNumberConfirm) {
+        // capture phone number valid confirmation
         switch (payload) {
           case 'QUICK_CONFIRM_YES':
+            context.setState(merge(context.state, {
+              askingPhoneNumberConfirm: false
+            }));
             submitProblem(context);
+            break;
           // submit problem
           case 'QUICK_CONFIRM_NO':
             // add new phone number
-            context.setState({ phoneNumber: null });
+            context.setState(merge(context.state, {
+              phoneNumber: null,
+              askingPhoneNumberConfirm: false
+            }));
             confirmPhoneNum(context);
+            break;
         }
       }
     }
@@ -42,12 +53,12 @@ const submitProblemHandler = async (context, next) => {
     if (context.event.hasAttachment) {
       const { attachments } = context.event;
       if (context.state.askingProblemLocation) {
-        // Attachment contain location data
+        // capture problem location
         const { coordinates } = attachments[0].payload;
-        context.setState({
+        context.setState(merge(context.state, {
           problem: { coordinates },
           askingProblemLocation: false
-        });
+        }));
 
         const problemMoreInfoMenu = i18n.__({
           phrase: 'menuProblemExtraInfoType',
@@ -66,11 +77,12 @@ const submitProblemHandler = async (context, next) => {
       }
 
       if (context.state.askingProblemPicture) {
+        // capture problem picture
         const { url } = attachments[0].payload;
-        context.setState({
+        context.setState(merge(context.state, {
           problem: { image: url, description: 'Created via Facebook Bot' },
           askingProblemPicture: false
-        });
+        }));
         confirmPhoneNum(context);
       }
       return;
@@ -96,20 +108,21 @@ const submitProblemHandler = async (context, next) => {
       }
     }
 
-    if (context.event.isText) {
+    if (context.event.isText && !context.event.isQuickReply) {
       const { text } = context.event;
       if (context.state.askingProblemDesc) {
-        context.setState({
+        // capture problem description
+        context.setState(merge(context.state, {
           problem: { description: text },
           askingProblemDesc: false
-        });
+        }));
         confirmPhoneNum(context);
-      }
-      if (context.state.askingPhoneNumber) {
-        context.setState({
+      } else if (context.state.askingPhoneNumber) {
+        // capture phone number
+        context.setState(merge(context.state, {
           phoneNumber: text,
           askingPhoneNumber: false
-        });
+        }));
         confirmPhoneNum(context);
       }
     }
@@ -121,18 +134,30 @@ const submitProblemHandler = async (context, next) => {
 
 }
 
+/**
+ * Prompt for problem description
+ * @param {*} context 
+ */
 const addProblemDesc = async (context) => {
   context.setState({ askingProblemDesc: true });
   const { locale } = context.state;
   await context.sendText(i18n.__({ phrase: 'textAddProblemDesc', locale }));
 }
 
+/**
+ * Prompt for problem picture
+ * @param {*} context 
+ */
 const addProblemPicture = async (context) => {
   context.setState({ askingProblemPicture: true });
   const { locale } = context.state;
   await context.sendText(i18n.__({ phrase: 'textUploadProblemPicture', locale }));
 }
 
+/**
+ * Prompt user to confirm about entered phone number
+ * @param {*} context 
+ */
 const confirmPhoneNum = async (context) => {
   if (!context.state.phoneNumber) {
     // Phone number is not set
@@ -145,8 +170,19 @@ const confirmPhoneNum = async (context) => {
   }
 }
 
-const submitProblem = async (context) => {
 
+const submitProblem = async (context) => {
+  const { problem, phoneNumber } = context.state;
+  const { user } = context.session;
+  let serviceRequest = {
+    'description': problem.description,
+    'first_name': user.first_name,
+    'lat': problem.coordinates.lat,
+    'long': problem.coordinates.long,
+    'media_url': problem.image,
+    'phone': phoneNumber,
+    'service_code': problem.service
+  }
 }
 
 

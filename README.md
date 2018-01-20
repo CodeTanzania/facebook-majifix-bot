@@ -64,9 +64,10 @@ All functionalities start from here.\
 Mainly it's a server which listen on port 5000. You are encouraged to add more [event listener](https://bottender.js.org/docs/APIReference-Event)
 and [handler](https://bottender.js.org/docs/APIReference-Handler) to enrich the bot.
 
-### app/actions.js
-It contains functions that when executed they send command to user to prompt them to do something with the bot. They stay in this file so that they can be reusable. If action to be sent to user is not expected to be reused
-somewhere else then we don't recommend to put it here.
+### app/prompts.js
+Contains functions that return prompts to be sent to user when they interact 
+with the bot. They stay in this file so that they can be reusable. If prompts 
+to be sent to user is not reusable then we don't recommend to put it here.
 
 ### bottender.config.js
 

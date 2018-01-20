@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "bottender": "0.14.11",
+    "deepmerge": "^2.0.1",
     "i18n": "^0.8.3",
     "node-fetch": "^1.7.3",
     "nodemon": "1.14.0",

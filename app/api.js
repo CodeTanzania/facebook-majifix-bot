@@ -11,7 +11,7 @@ const API = {
     const url = `${config.BASE_API_URL}services.json`;
     return fetch(url)
       .then(res => res.json());
-  },
+  }
 };
 
 module.exports = API;

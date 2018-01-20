@@ -44,7 +44,7 @@ exports.displayMainMenu = async (context) => {
       submitProblem: false,
       changeLanguage: false,
       changePhoneNumber: false,
-    }
+    },
   });
 
   const { locale } = context.state;
@@ -52,34 +52,34 @@ exports.displayMainMenu = async (context) => {
     {
       type: 'postback',
       title: i18n.__({ phrase: 'actionSubmitProblem', locale }),
-      payload: 'SUBMIT_PROBLEM'
+      payload: 'SUBMIT_PROBLEM',
     },
     {
       type: 'postback',
       title: i18n.__({ phrase: 'actionChangePhoneNumber', locale }),
-      payload: 'CHANGE_PHONE_NUMBER'
+      payload: 'CHANGE_PHONE_NUMBER',
     },
     {
       type: 'postback',
       title: i18n.__({ phrase: 'actionChangeLanguage', locale }),
-      payload: 'CHANGE_LANGUAGE'
-    }
-  ])
-}
+      payload: 'CHANGE_LANGUAGE',
+    },
+  ]);
+};
 
 exports.displayPhoneNumberConfirm = async (context) => {
   const { locale } = context.state;
   const quickConfirmMenu = i18n.__({
     phrase: 'menuQuickConfirm',
-    locale
+    locale,
   });
   // Modify menu items as per messenger requirement
-  const messengerMenu = quickConfirmMenu.map(menu => {
-    menu.content_type = 'text';
+  const messengerMenu = quickConfirmMenu.map((menu) => {
+    menu.content_type = 'text'; // eslint-disable-line no-param-reassign
     return menu;
   });
 
   await context.sendText(i18n.__({ phrase: 'textConfirmPhone', locale }, context.state.phoneNumber), {
-    quick_replies: messengerMenu
+    quick_replies: messengerMenu,
   });
-}
+};
