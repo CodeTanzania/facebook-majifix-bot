@@ -14,15 +14,16 @@ module.exports = async (context, next) => {
       const { payload } = context.event.quickReply;
       switch (payload) {
         case 'SW':
-          context.setState({ locale: 'sw', dialog: { changeLanguage: false } });
+          context.session._data.locale = 'sw';
+          context.setState({ dialog: { changeLanguage: false } });
           break;
         case 'EN':
-          context.setState({ locale: 'en', dialog: { changeLanguage: false } });
+          context.session._data.locale = 'en';
+          context.setState({ dialog: { changeLanguage: false } });
           break;
       }
     }
-  } else {
-    // Pass control to other handler in the execution stack
-    await next();
   }
+  // Pass control to other handler in the execution stack
+  await next();
 }

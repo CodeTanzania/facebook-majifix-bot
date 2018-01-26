@@ -2,6 +2,8 @@
 const i18n = require('i18n');
 const merge = require('deepmerge');
 const API = require('../api');
+const logger = require('../winston');
+
 const { askPhoneNumber, displayPhoneNumberConfirm } = require('../prompts');
 
 /**
@@ -12,7 +14,7 @@ const { askPhoneNumber, displayPhoneNumberConfirm } = require('../prompts');
  * @param {function} next 
  */
 const submitProblemHandler = async (context, next) => {
-  const { locale } = context.state;
+  const { locale } = context.session._data;
   if (context.state.dialog.submitProblem) {
     // This handler is active now
     if (context.event.isQuickReply) {
@@ -24,7 +26,7 @@ const submitProblemHandler = async (context, next) => {
           askingProblemService: false,
           askingProblemLocation: true
         }));
-        await context.sendText(i18n.__({ phrase: 'textShareLocation', locale }), {
+        await context.sendText(i18n.__({ phrase: 'textAskShareLocation', locale }), {
           quick_replies: [{ "content_type": "location" }]
         })
         return;
@@ -42,10 +44,10 @@ const submitProblemHandler = async (context, next) => {
           case 'QUICK_CONFIRM_NO':
             // add new phone number
             context.setState(merge(context.state, {
-              phoneNumber: null,
-              askingPhoneNumberConfirm: false
+              askingPhoneNumberConfirm: false,
+              askingPhoneNumber: true
             }));
-            confirmPhoneNum(context);
+            askPhoneNumber(context);
             break;
         }
       }
@@ -72,7 +74,7 @@ const submitProblemHandler = async (context, next) => {
         });
         // Display Menu
         await context.sendButtonTemplate(i18n.__({
-          phrase: 'textAddProblemMoreInfo',
+          phrase: 'textAskProblemMoreInfo',
           locale
         }), messengerMenu);
       }
@@ -104,6 +106,9 @@ const submitProblemHandler = async (context, next) => {
           break;
         case 'PMI_MENU_CONTINUE':
           // continue with problem submission
+          context.setState(merge(context.state, {
+            problem: { description: 'Created via Facebook Bot' }
+          }));
           confirmPhoneNum(context);
           break;
       }
@@ -120,8 +125,8 @@ const submitProblemHandler = async (context, next) => {
         confirmPhoneNum(context);
       } else if (context.state.askingPhoneNumber) {
         // capture phone number
+        context.session._data.phoneNumber = text;
         context.setState(merge(context.state, {
-          phoneNumber: text,
           askingPhoneNumber: false
         }));
         confirmPhoneNum(context);
@@ -141,8 +146,8 @@ const submitProblemHandler = async (context, next) => {
  */
 const addProblemDesc = async (context) => {
   context.setState({ askingProblemDesc: true });
-  const { locale } = context.state;
-  await context.sendText(i18n.__({ phrase: 'textAddProblemDesc', locale }));
+  const { locale } = context.session._data;
+  await context.sendText(i18n.__({ phrase: 'textAskProblemDesc', locale }));
 }
 
 /**
@@ -151,7 +156,7 @@ const addProblemDesc = async (context) => {
  */
 const addProblemPicture = async (context) => {
   context.setState({ askingProblemPicture: true });
-  const { locale } = context.state;
+  const { locale } = context.session._data;
   await context.sendText(i18n.__({ phrase: 'textUploadProblemPicture', locale }));
 }
 
@@ -160,7 +165,7 @@ const addProblemPicture = async (context) => {
  * @param {*} context 
  */
 const confirmPhoneNum = async (context) => {
-  if (!context.state.phoneNumber) {
+  if (!context.session._data.phoneNumber) {
     // Phone number is not set
     context.setState({ askingPhoneNumber: true });
     askPhoneNumber(context);
@@ -173,7 +178,8 @@ const confirmPhoneNum = async (context) => {
 
 
 const submitProblem = async (context) => {
-  const { problem, phoneNumber } = context.state;
+  const { problem } = context.state;
+  const { phoneNumber, locale } = context.session._data;
   const { user } = context.session;
   let serviceRequest = {
     'description': problem.description,
@@ -185,6 +191,18 @@ const submitProblem = async (context) => {
     'service_code': problem.service
   }
   const result = await API.submitServiceRequest(serviceRequest);
+  const ticketNum = result[0].service_request_id;
+
+  logger.info(`Problem submitted successfully, ticket number: ${ticketNum}`);
+
+  context.session._data.issues.push(ticketNum);
+  await context.sendText(i18n.__({
+    phrase: 'textProblemSubmittedSuccessfully',
+    locale
+  }, ticketNum));
+
+
+  context.resetState();
 }
 
 

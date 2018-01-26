@@ -16,7 +16,10 @@ const API = {
     const url = `${config.BASE_API_URL}requests.json`;
     const options = {
       method: 'POST',
-      body: { form: serviceRequest },
+      body: JSON.stringify(serviceRequest),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     };
 
     return fetch(url, options)

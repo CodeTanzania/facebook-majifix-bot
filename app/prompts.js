@@ -3,12 +3,12 @@ const i18n = require('i18n');
 const API = require('./api');
 
 exports.askPhoneNumber = async (context) => {
-  const { locale } = context.state;
+  const { locale } = context.session._data;
   await context.sendText(i18n.__({ phrase: 'textAddPhoneNum', locale }));
 };
 
 exports.askLocale = async (context) => {
-  const { locale } = context.state;
+  const { locale } = context.session._data;
   await context.sendText(i18n.__({ phrase: 'textSelectLanguage', locale }), {
     quick_replies: [
       {
@@ -26,7 +26,7 @@ exports.askLocale = async (context) => {
 };
 
 exports.askProblemService = async (context) => {
-  const { locale } = context.state;
+  const { locale } = context.session._data;
   const services = await API.getServices();
   const messengerServices = services.map(service => ({
     content_type: 'text',
@@ -39,15 +39,9 @@ exports.askProblemService = async (context) => {
 };
 
 exports.displayMainMenu = async (context) => {
-  context.setState({
-    dialog: {
-      submitProblem: false,
-      changeLanguage: false,
-      changePhoneNumber: false,
-    },
-  });
-
-  const { locale } = context.state;
+  // reset session data
+  context.resetState();
+  const { locale } = context.session._data;
   await context.sendButtonTemplate(i18n.__({ phrase: 'textBotWelcomeMsg', locale }), [
     {
       type: 'postback',
@@ -68,7 +62,7 @@ exports.displayMainMenu = async (context) => {
 };
 
 exports.displayPhoneNumberConfirm = async (context) => {
-  const { locale } = context.state;
+  const { locale, phoneNumber } = context.session._data;
   const quickConfirmMenu = i18n.__({
     phrase: 'menuQuickConfirm',
     locale,
@@ -79,7 +73,7 @@ exports.displayPhoneNumberConfirm = async (context) => {
     return menu;
   });
 
-  await context.sendText(i18n.__({ phrase: 'textConfirmPhone', locale }, context.state.phoneNumber), {
+  await context.sendText(i18n.__({ phrase: 'textAskConfirmPhoneNumber', locale }, phoneNumber), {
     quick_replies: messengerMenu,
   });
 };
